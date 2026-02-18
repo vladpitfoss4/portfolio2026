@@ -1,0 +1,18 @@
+{
+  "social": {
+    "behance": {
+      "name": "Behance",
+      "url": "https://www.behance.net/vladislavyamachev",
+      "display": "Behance"
+    },
+    "telegram": {
+      "name": "Telegram",
+      "url": "https://t.me/moscowprisoner",
+      "display": "Телеграм"
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-18"
+  }
+}

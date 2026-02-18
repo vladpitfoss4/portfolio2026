@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio - Web Developer">
+    <title>Portfolio</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/typography.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+    <!-- Hero Section - 100vh -->
+    <section class="hero">
+        <!-- Header with logo and text -->
+        <header class="hero__header">
+            <a href="#" class="hero__header-text text-nav" data-link="behance">Behance</a>
+            <img src="assets/images/name-large.svg" alt="Logo" class="hero__logo">
+            <a href="#" class="hero__header-text text-nav" data-link="telegram">Телеграм</a>
+        </header>
+        
+        <!-- Marquee with large repeating logo -->
+        <div class="hero__marquee">
+            <div class="hero__marquee-content">
+                <img src="assets/images/name-large.svg" alt="Name" class="hero__marquee-logo">
+                <img src="assets/images/name-large.svg" alt="Name" class="hero__marquee-logo">
+                <img src="assets/images/name-large.svg" alt="Name" class="hero__marquee-logo">
+                <img src="assets/images/name-large.svg" alt="Name" class="hero__marquee-logo">
+                <img src="assets/images/name-large.svg" alt="Name" class="hero__marquee-logo">
+                <img src="assets/images/name-large.svg" alt="Name" class="hero__marquee-logo">
+            </div>
+        </div>
+        
+        <!-- Footer with 3 text elements -->
+        <footer class="hero__footer">
+            <span class="hero__footer-text text-nav">Scroll</span>
+            <span class="hero__footer-text hero__footer-text--center text-nav" id="msk-time">--</span>
+            <span class="hero__footer-text text-nav">©2026</span>
+        </footer>
+    </section>
+    
+    <!-- About Section -->
+    <section class="about section">
+        <div class="about__wrapper">
+            <!-- Hero Title - centered full width -->
+            <div class="about__header">
+                <h1 class="about__title text-hero-title">Vladislav Yamachev</h1>
+            </div>
+            
+            <!-- Two column content -->
+            <div class="about__content">
+                <!-- Left Column - EMPTY -->
+                <div class="about__column about__column--left">
+                    <!-- Empty left column -->
+                </div>
+                
+                <!-- Right Column - Content here -->
+                <div class="about__column about__column--right">
+                    <div class="about__text-block">
+                        <p class="about__label text-section-label">/ Обо мне</p>
+                        <p class="about__description text-body-large">
+                            UI/UX дизайнер, cпециализируюсь на посадочных страницах для EdTech, IT-стартапов и digital-продуктов. Продумываю UX-архитектуру, пишу смыслы, собираю прототипы
+                        </p>
+                    </div>
+                    
+                    <div class="about__actions">
+                        <a href="#" class="btn btn-outline text-button">+ Резюме</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- JavaScript Modules -->
+    <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

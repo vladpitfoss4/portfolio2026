@@ -1,0 +1,142 @@
+/* ==============================================
+   TYPOGRAPHY.CSS - Typography styles and text utilities
+   Purpose: Centralized typography rules, font styles, text transforms
+   Dependencies: variables.css
+   Version: 1.0.0
+   ============================================== */
+
+/* ==============================================
+   BASE TYPOGRAPHY
+   ============================================== */
+
+/* Body text - default font settings */
+body {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings - base styles */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-heading);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-text);
+    margin: 0;
+}
+
+h1 { font-size: var(--font-size-5xl); }
+h2 { font-size: var(--font-size-4xl); }
+h3 { font-size: var(--font-size-3xl); }
+h4 { font-size: var(--font-size-2xl); }
+h5 { font-size: var(--font-size-xl); }
+h6 { font-size: var(--font-size-lg); }
+
+/* ==============================================
+   TEXT UTILITIES
+   ============================================== */
+
+/* Text transform utilities */
+.text-uppercase { text-transform: uppercase; }
+.text-lowercase { text-transform: lowercase; }
+.text-capitalize { text-transform: capitalize; }
+
+/* Text alignment */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* Font weights */
+.font-light { font-weight: 300; }
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* Text indent utility */
+.text-indent { text-indent: 82px; }
+
+/* ==============================================
+   SPECIFIC TEXT STYLES - REUSABLE
+   ============================================== */
+
+/* Large hero title - 96px Helvetica Neue Medium */
+.text-hero-title {
+    font-family: 'Helvetica Neue', var(--font-family-base);
+    font-size: 96px;
+    font-weight: 500;
+    line-height: 95px;
+    letter-spacing: -0.05em;
+    text-align: center;
+}
+
+/* Section label - 18px uppercase with indent */
+.text-section-label {
+    font-family: 'Helvetica Neue', var(--font-family-base);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 117.71%;
+    text-transform: uppercase;
+    text-indent: 82px;
+}
+
+/* Body large - 32px for main content */
+.text-body-large {
+    font-family: 'Helvetica Neue', var(--font-family-base);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 117.71%;
+    text-indent: 82px;
+}
+
+/* Button text - 16px uppercase */
+.text-button {
+    font-family: 'Helvetica Neue', var(--font-family-base);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 141.26%;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* Header/Footer navigation text - Helvetica Neue Medium 18px uppercase */
+.text-nav {
+    font-family: 'Helvetica Neue', var(--font-family-base);
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+/* Small navigation text for mobile */
+.text-nav-small {
+    font-family: 'Helvetica Neue', var(--font-family-base);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+/* Monospace text for code/technical content */
+.text-mono {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+}
+
+/* Secondary text - muted color */
+.text-secondary {
+    color: var(--color-text-secondary);
+}
+
+/* ==============================================
+   RESPONSIVE TYPOGRAPHY
+   ============================================== */
+
+@media (max-width: 768px) {
+    h1 { font-size: var(--font-size-4xl); }
+    h2 { font-size: var(--font-size-3xl); }
+    h3 { font-size: var(--font-size-2xl); }
+}

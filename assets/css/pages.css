@@ -1,0 +1,271 @@
+/* ==============================================
+   PAGES.CSS - Page-specific styles
+   Purpose: Styles unique to specific pages
+   Dependencies: variables.css, layout.css, components.css
+   Version: 1.0.0
+   ============================================== */
+
+/* ==============================================
+   HERO SECTION - Landing page first screen
+   Height: 100vh, contains header, marquee, footer
+   ============================================== */
+
+.hero {
+    height: 100vh;
+    width: 100vw;
+    max-width: 100%; /* Prevent overflow */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Background image - 100% width and height */
+    background-image: url('../images/image 8.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Header - Logo and text links */
+.hero__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-lg) var(--space-xl);
+    position: relative;
+    z-index: 10;
+    /* Exclusion blend mode for inverted color effect */
+    mix-blend-mode: exclusion;
+}
+
+.hero__logo {
+    height: 36px;
+    width: auto;
+}
+
+/* Header text links - typography handled by .text-nav class */
+.hero__header-text {
+    color: #FFFFFF; /* White text for hero section */
+    text-decoration: none; /* Remove underline from links */
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+}
+
+.hero__header-text:hover {
+    opacity: 0.7;
+}
+
+/* Marquee - Scrolling large logo positioned at bottom */
+.hero__marquee {
+    flex: 1;
+    display: flex;
+    align-items: flex-end; /* Align to bottom instead of center */
+    overflow: hidden;
+    position: relative;
+    z-index: 5;
+    /* Exclusion blend mode for inverted color effect */
+    mix-blend-mode: exclusion;
+}
+
+.hero__marquee-content {
+    display: flex;
+    gap: var(--space-xl);
+    /* Animation removed - handled by JavaScript RAF for smooth continuous scroll */
+    will-change: transform;
+}
+
+.hero__marquee-logo {
+    height: 35vh; /* 35vh as requested, positioned above footer */
+    width: auto;
+    min-width: calc(35vh * 8.35); /* Maintain aspect ratio 517:62 */
+    flex-shrink: 0;
+    /* Force SVG to scale properly - maintain aspect ratio */
+    display: block;
+    object-fit: contain;
+}
+
+/* Marquee animation keyframes - kept for reference but not used
+   JavaScript RAF animation is used instead for seamless scrolling */
+/* @keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+} */
+
+/* Footer - 3 text elements */
+.hero__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-lg) var(--space-xl);
+    position: relative;
+    z-index: 10;
+    /* Exclusion blend mode for inverted color effect */
+    mix-blend-mode: exclusion;
+}
+
+/* Footer text - typography handled by .text-nav class */
+.hero__footer-text {
+    color: #FFFFFF; /* White text for hero section */
+}
+
+.hero__footer-text--center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero__header,
+    .hero__footer {
+        padding: var(--space-md) var(--space-lg);
+    }
+    
+    /* Mobile uses .text-nav-small class for smaller text */
+    
+    .hero__logo {
+        height: 28px;
+    }
+    
+    .hero__marquee-logo {
+        height: 28vh; /* Slightly smaller on mobile */
+    }
+}
+
+/* ==============================================
+   ABOUT SECTION - Second block with two columns
+   Padding: 120px top/bottom, max-width 1440px
+   ============================================== */
+
+.about {
+    padding: 120px 0;
+    background-color: #FFFFFF;
+    width: 100%;
+}
+
+/* Wrapper - max 1440px centered */
+.about__wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 0 20px;
+}
+
+/* Header with centered title */
+.about__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    align-self: stretch; /* Fill width */
+}
+
+/* Hero title - 96px centered */
+.about__title {
+    max-width: 794px;
+    margin: 0;
+}
+
+/* Two column content layout */
+.about__content {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+}
+
+/* Column - left and right */
+.about__column {
+    display: flex;
+    flex-direction: column;
+    gap: 32px; /* Gap between text block and actions */
+    width: 690px;
+    flex: 1;
+}
+
+.about__column--left {
+    order: 0;
+}
+
+.about__column--right {
+    order: 1;
+}
+
+/* Text block with label and description */
+.about__text-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 20px between label and description */
+    width: 100%;
+}
+
+.about__label {
+    color: #000000; /* Pure black */
+}
+
+.about__description {
+    color: #000000; /* Pure black */
+}
+
+/* Actions container for buttons */
+.about__actions {
+    display: flex;
+    gap: 18px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1440px) {
+    .about__column {
+        width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .about {
+        padding: 80px 0;
+    }
+    
+    .about__wrapper {
+        gap: 32px;
+    }
+    
+    .about__header {
+        padding: 10px;
+    }
+    
+    .about__title {
+        font-size: 48px;
+        line-height: 1.1;
+    }
+    
+    .about__content {
+        flex-direction: column;
+        padding: 10px;
+    }
+    
+    .about__column {
+        width: 100%;
+    }
+    
+    .about__text-block {
+        gap: 16px;
+    }
+    
+    .about__label {
+        font-size: 16px;
+        text-indent: 0;
+    }
+    
+    .about__description {
+        font-size: 24px;
+        text-indent: 0;
+    }
+}
