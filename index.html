@@ -15,11 +15,23 @@
     <link rel="stylesheet" href="assets/css/pages.css">
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="curzr" hidden>
+        <div class="circle"></div>
+        <div class="dot"></div>
+    </div>
+    
     <!-- Hero Section - 100vh -->
     <section class="hero">
+        <!-- Background Video - fills entire hero block -->
+        <video class="hero__video" autoplay muted loop playsinline preload="auto" poster="assets/images/image 8.jpg">
+            <source src="assets/videos/IMG_2095.MP4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
         <!-- Header with logo and text -->
         <header class="hero__header">
-            <a href="#" class="hero__header-text text-nav" data-link="behance">Behance</a>
+            <a href="#" class="hero__header-text text-nav" data-link="behance">Беханс</a>
             <img src="assets/images/name-large.svg" alt="Logo" class="hero__logo">
             <a href="#" class="hero__header-text text-nav" data-link="telegram">Телеграм</a>
         </header>
@@ -75,6 +87,49 @@
             </div>
         </div>
     </section>
+    
+    <!-- Projects Section -->
+    <section class="projects section">
+        <div class="projects__wrapper">
+            <div class="projects__grid" id="projects-grid">
+                <!-- Projects will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Logos Section -->
+    <section class="logos section">
+        <div class="logos__wrapper">
+            <div class="logos__marquee">
+                <div class="logos__track" id="logos-track">
+                    <!-- Logos will be loaded here dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer Links Section -->
+    <section class="footer-links section">
+        <div class="footer-links__wrapper">
+            <div class="footer-links__grid">
+                <!-- Links will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Bottom Banner Section - Clickable link to Telegram -->
+    <a href="https://t.me/moscowprisoner" target="_blank" rel="noopener noreferrer" class="bottom-banner">
+        <div class="bottom-banner__marquee">
+            <div class="bottom-banner__content" id="bottom-marquee">
+                <img src="assets/images/Work.svg" alt="Work" class="bottom-banner__logo">
+                <img src="assets/images/Work.svg" alt="Work" class="bottom-banner__logo">
+                <img src="assets/images/Work.svg" alt="Work" class="bottom-banner__logo">
+                <img src="assets/images/Work.svg" alt="Work" class="bottom-banner__logo">
+                <img src="assets/images/Work.svg" alt="Work" class="bottom-banner__logo">
+                <img src="assets/images/Work.svg" alt="Work" class="bottom-banner__logo">
+            </div>
+        </div>
+    </a>
     
     <!-- JavaScript Modules -->
     <script type="module" src="assets/js/main.js"></script>

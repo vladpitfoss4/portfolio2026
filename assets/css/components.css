@@ -122,3 +122,30 @@ a {
 a:hover {
     color: var(--color-primary-dark);
 }
+
+/* ==============================================
+   CUSTOM CURSOR COMPONENT
+   Purpose: Hide default cursor and prepare for custom cursor
+   Dependencies: cursor.js component
+   ============================================== */
+
+/* Hide default cursor everywhere - UNIVERSAL */
+* {
+    cursor: none !important;
+}
+
+/* Custom cursor container - REUSABLE */
+.curzr {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 2147483647;
+}
+
+/* Cursor elements are styled via JavaScript for dynamic configuration */
+.curzr .circle,
+.curzr .dot {
+    pointer-events: none;
+    user-select: none;
+}

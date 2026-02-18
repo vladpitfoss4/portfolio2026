@@ -15,6 +15,7 @@
  * Initialize smooth marquee animation using requestAnimationFrame
  * @param {string} selector - CSS selector for marquee container
  * @param {number} speed - Pixels per second (default: 50)
+ * @param {string} itemSelector - CSS selector for marquee items (default: auto-detect)
  * @returns {Function} Cleanup function to stop animation
  * 
  * LOGIC: Uses RAF instead of CSS animation to prevent jumps on tab switch.
@@ -23,7 +24,7 @@
  * WHY RAF: CSS animations pause when tab is hidden, causing jumps.
  * RAF continues smoothly regardless of visibility state.
  */
-export function initMarquee(selector, speed = 50) {
+export function initMarquee(selector, speed = 50, itemSelector = null) {
     const marqueeContent = document.querySelector(selector);
     
     if (!marqueeContent) {
@@ -38,8 +39,15 @@ export function initMarquee(selector, speed = 50) {
     // Calculate total width of content (half of all items)
     // We have 6 items, so reset point is at 50%
     const calculateResetPoint = () => {
-        const firstItem = marqueeContent.querySelector('.hero__marquee-logo');
-        if (!firstItem) return 0;
+        // Auto-detect item selector if not provided
+        const itemClass = itemSelector || 
+            (marqueeContent.querySelector('.hero__marquee-logo') ? '.hero__marquee-logo' : '.bottom-banner__logo');
+        
+        const firstItem = marqueeContent.querySelector(itemClass);
+        if (!firstItem) {
+            console.warn(`No marquee items found with selector: ${itemClass}`);
+            return 0;
+        }
         
         const itemWidth = firstItem.offsetWidth;
         const gap = parseFloat(getComputedStyle(marqueeContent).gap) || 0;

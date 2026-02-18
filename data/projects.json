@@ -1,5 +1,70 @@
 {
-  "projects": [],
+  "projects": [
+    {
+      "id": "instaforex-search",
+      "title": "INSTAFOREX / SEARCH ENGINE",
+      "year": "2025",
+      "thumbnail": "/assets/images/case-picture.jpg",
+      "images": [],
+      "tags": ["UI/UX", "Web Design"],
+      "techStack": [],
+      "links": {
+        "live": "",
+        "github": ""
+      },
+      "date": "2025-01-01",
+      "featured": true,
+      "fullDescription": ""
+    },
+    {
+      "id": "safety-first-webapp",
+      "title": "SAFETY FIRST / WEB APP",
+      "year": "2025",
+      "thumbnail": "/assets/images/case-picture.jpg",
+      "images": [],
+      "tags": ["UI/UX", "Web App"],
+      "techStack": [],
+      "links": {
+        "live": "",
+        "github": ""
+      },
+      "date": "2025-01-01",
+      "featured": true,
+      "fullDescription": ""
+    },
+    {
+      "id": "adbison-website-1",
+      "title": "ADBISON / WEBSITE",
+      "year": "2025",
+      "thumbnail": "/assets/images/case-picture.jpg",
+      "images": [],
+      "tags": ["UI/UX", "Website"],
+      "techStack": [],
+      "links": {
+        "live": "",
+        "github": ""
+      },
+      "date": "2025-01-01",
+      "featured": true,
+      "fullDescription": ""
+    },
+    {
+      "id": "adbison-website-2",
+      "title": "ADBISON / WEBSITE",
+      "year": "2025",
+      "thumbnail": "/assets/images/case-picture.jpg",
+      "images": [],
+      "tags": ["UI/UX", "Website"],
+      "techStack": [],
+      "links": {
+        "live": "",
+        "github": ""
+      },
+      "date": "2025-01-01",
+      "featured": true,
+      "fullDescription": ""
+    }
+  ],
   "metadata": {
     "version": "1.0.0",
     "lastUpdated": "2026-02-18"

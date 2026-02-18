@@ -3,12 +3,26 @@
     "behance": {
       "name": "Behance",
       "url": "https://www.behance.net/vladislavyamachev",
-      "display": "Behance"
+      "display": "Беханс",
+      "username": "@VladislavYamachev"
     },
     "telegram": {
       "name": "Telegram",
       "url": "https://t.me/moscowprisoner",
-      "display": "Телеграм"
+      "display": "Телеграм",
+      "username": "@moscowprisoner"
+    }
+  },
+  "contact": {
+    "resume": {
+      "name": "Резюме",
+      "url": "#",
+      "display": "link.com"
+    },
+    "phone": {
+      "name": "Телефон",
+      "url": "tel:+79501764882",
+      "display": "+7 (950) 176 4882"
     }
   },
   "metadata": {

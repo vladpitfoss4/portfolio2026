@@ -19,6 +19,7 @@ import { initProject } from './pages/project.js';
 
 // Import components
 import { initMarquee } from './components/marquee.js';
+import { initCursor } from './components/cursor.js';
 
 // <!-- ANCHOR: init -->
 /**
@@ -30,6 +31,9 @@ import { initMarquee } from './components/marquee.js';
  */
 async function init() {
     try {
+        // Initialize custom cursor first - REUSED: from components
+        initCursor();
+        
         // Initialize router - REUSED: from shared
         const currentPage = initRouter();
         

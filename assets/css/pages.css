@@ -8,6 +8,7 @@
 /* ==============================================
    HERO SECTION - Landing page first screen
    Height: 100vh, contains header, marquee, footer
+   Background: Video element fills entire block
    ============================================== */
 
 .hero {
@@ -17,13 +18,24 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /* Background image - 100% width and height */
-    background-image: url('../images/image 8.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     overflow: hidden;
     position: relative;
+    background-color: #000; /* Black background to see if video loads */
+}
+
+/* Background video - fills entire hero block */
+.hero__video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    opacity: 1 !important;
+    display: block !important;
+    visibility: visible !important;
 }
 
 /* Header - Logo and text links */
@@ -33,7 +45,7 @@
     align-items: center;
     padding: var(--space-lg) var(--space-xl);
     position: relative;
-    z-index: 10;
+    z-index: 10; /* Way above video */
     /* Exclusion blend mode for inverted color effect */
     mix-blend-mode: exclusion;
 }
@@ -62,7 +74,7 @@
     align-items: flex-end; /* Align to bottom instead of center */
     overflow: hidden;
     position: relative;
-    z-index: 5;
+    z-index: 10; /* Way above video */
     /* Exclusion blend mode for inverted color effect */
     mix-blend-mode: exclusion;
 }
@@ -102,7 +114,7 @@
     align-items: center;
     padding: var(--space-lg) var(--space-xl);
     position: relative;
-    z-index: 10;
+    z-index: 10; /* Way above video */
     /* Exclusion blend mode for inverted color effect */
     mix-blend-mode: exclusion;
 }
@@ -267,5 +279,303 @@
     .about__description {
         font-size: 24px;
         text-indent: 0;
+    }
+}
+
+/* ==============================================
+   PROJECTS SECTION - Grid of project cards
+   2x2 grid layout with project previews
+   ============================================== */
+
+.projects {
+    padding: 120px 0;
+    background-color: #FFFFFF;
+    width: 100%;
+}
+
+/* Wrapper - full width with padding */
+.projects__wrapper {
+    width: 100%;
+    padding: 0 32px; /* 32px from screen edges */
+}
+
+/* Grid - 2 columns with 32px gap */
+.projects__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px; /* 32px between cards */
+}
+
+/* Project card - REUSABLE component */
+.project-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Equal spacing: image to title, title to divider */
+    cursor: pointer;
+    transition: transform var(--transition-base);
+    text-decoration: none;
+    padding-bottom: 16px; /* Same as gap for symmetry */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3); /* Divider under each card */
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Card image container - 4:3 aspect ratio, no border radius */
+.project-card__image {
+    width: 100%;
+    aspect-ratio: 4 / 3; /* 4:3 aspect ratio */
+    overflow: hidden;
+    background-color: #F5F5F5;
+}
+
+.project-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+}
+
+.project-card:hover .project-card__image img {
+    transform: scale(1.05);
+}
+
+/* Card title with bullet point */
+.project-card__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #000000;
+}
+
+/* Bullet point - 8x8 circle before title */
+.project-card__title::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: #000000;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .projects {
+        padding: 80px 0;
+    }
+    
+    .projects__grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+}
+
+/* ==============================================
+   LOGOS SECTION - Marquee with company logos
+   Padding: 140px top/bottom, 70px gap between logos
+   ============================================== */
+
+.logos {
+    padding: 140px 0;
+    background-color: #FFFFFF;
+    width: 100%;
+    overflow: hidden; /* Hide horizontal overflow only */
+}
+
+/* Wrapper - full width */
+.logos__wrapper {
+    width: 100%;
+}
+
+/* Marquee container */
+.logos__marquee {
+    width: 100%;
+    overflow: visible; /* Allow logos to scale without clipping */
+    position: relative;
+    padding: 20px 0; /* Add vertical padding for hover scale */
+}
+
+/* Logos track - will scroll if needed */
+.logos__track {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center logos horizontally */
+    gap: 70px; /* 70px between logos */
+    padding: 0 32px; /* Same padding as other sections */
+    will-change: transform;
+}
+
+/* Individual logo item */
+.logos__item {
+    flex-shrink: 0;
+    height: 60px; /* Fixed height for logos */
+    display: flex;
+    align-items: center;
+    transition: transform var(--transition-base);
+}
+
+.logos__item:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.logos__item img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    /* Black logos - use filter to make them black */
+    filter: brightness(0) saturate(100%);
+}
+
+/* Marquee animation - only if logos overflow */
+.logos__track--animate {
+    animation: logosMarquee 30s linear infinite;
+}
+
+@keyframes logosMarquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .logos {
+        padding: 80px 0;
+    }
+    
+    .logos__track {
+        gap: 40px;
+    }
+    
+    .logos__item {
+        height: 40px;
+    }
+}
+
+/* ==============================================
+   FOOTER LINKS SECTION - 4 column links
+   Padding: 40px left/right, 40px gap between items
+   ============================================== */
+
+.footer-links {
+    padding: 120px 0;
+    background-color: #FFFFFF;
+    width: 100%;
+}
+
+/* Wrapper - full width with padding */
+.footer-links__wrapper {
+    width: 100%;
+    padding: 0 40px; /* 40px from screen edges */
+}
+
+/* Grid - 4 columns centered */
+.footer-links__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns filling width */
+    gap: 40px; /* 40px between items */
+    width: 100%;
+}
+
+/* Individual link column */
+.footer-links__column {
+    display: flex;
+    flex-direction: column;
+    text-align: left; /* Align text to left */
+    line-height: 1.2; /* Tighter line height for closer spacing */
+}
+
+/* Column title - uses .text-nav typography */
+.footer-links__title {
+    color: #000000;
+    }
+
+/* Column link - uses .text-nav typography */
+.footer-links__link {
+    color: #000000;
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+   }
+
+.footer-links__link:hover {
+    opacity: 0.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer-links {
+        padding: 80px 0;
+    }
+    
+    .footer-links__wrapper {
+        padding: 0 32px;
+    }
+    
+    .footer-links__grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        grid-template-columns: 1fr; /* Single column on mobile */
+    }
+    
+    .footer-links__column {
+        text-align: center;
+    }
+}
+
+/* ==============================================
+   BOTTOM BANNER SECTION - Background image with marquee
+   Height: 50vh, background image with scrolling Work.svg
+   ============================================== */
+
+.bottom-banner {
+    height: 50vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    /* Background image */
+    background-image: url('../images/bottom-image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Marquee container */
+.bottom-banner__marquee {
+    height: 100%;
+    display: flex;
+    align-items: flex-start; /* Align to top instead of center */
+    padding-top: 40px; /* 40px from top */
+    overflow: hidden;
+    position: relative;
+    /* No blend mode - normal display */
+}
+
+/* Marquee content - scrolling logos */
+.bottom-banner__content {
+    display: flex;
+    gap: var(--space-xl);
+    will-change: transform;
+}
+
+/* Work logo in marquee */
+.bottom-banner__logo {
+    height: 33vh; /* Same as hero marquee */
+    width: auto;
+    flex-shrink: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .bottom-banner {
+        height: 40vh;
+    }
+    
+    .bottom-banner__logo {
+        height: 28vh;
     }
 }
