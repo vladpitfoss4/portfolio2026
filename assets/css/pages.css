@@ -318,14 +318,19 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.3); /* Divider under each card */
 }
 
+/* Remove href attribute styling - cards open modal instead of navigation */
+.project-card[data-project-id] {
+    cursor: pointer;
+}
+
 .project-card:hover {
     transform: translateY(-4px);
 }
 
-/* Card image container - 4:3 aspect ratio, no border radius */
+/* Card image container - 16:9 aspect ratio, no border radius */
 .project-card__image {
     width: 100%;
-    aspect-ratio: 4 / 3; /* 4:3 aspect ratio */
+    aspect-ratio: 16 / 9; /* 16:9 aspect ratio */
     overflow: hidden;
     background-color: #F5F5F5;
 }
@@ -337,9 +342,7 @@
     transition: transform var(--transition-base);
 }
 
-.project-card:hover .project-card__image img {
-    transform: scale(1.05);
-}
+/* Removed hover zoom effect */
 
 /* Card title with bullet point */
 .project-card__title {
@@ -530,6 +533,7 @@
 /* ==============================================
    BOTTOM BANNER SECTION - Background image with marquee
    Height: 50vh, background image with scrolling Work.svg
+   Clickable link to Telegram
    ============================================== */
 
 .bottom-banner {
@@ -537,11 +541,20 @@
     width: 100%;
     position: relative;
     overflow: hidden;
+    display: block; /* Make <a> tag behave as block element */
+    text-decoration: none; /* Remove link underline */
+    cursor: pointer; /* Show pointer cursor */
+    transition: opacity var(--transition-base); /* Smooth hover effect */
     /* Background image */
     background-image: url('../images/bottom-image.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+/* Hover effect for clickable banner */
+.bottom-banner:hover {
+    opacity: 0.9; /* Slight fade on hover for feedback */
 }
 
 /* Marquee container */

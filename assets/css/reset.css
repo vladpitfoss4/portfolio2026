@@ -33,15 +33,10 @@ html:focus-within {
     scroll-behavior: smooth;
 }
 
-/* Hide scrollbars globally */
+/* Prevent horizontal scroll only */
 html {
     overflow-x: hidden; /* Prevent horizontal scroll */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
-
-html::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    overflow-y: auto; /* Allow vertical scroll */
 }
 
 /* Set core body defaults */

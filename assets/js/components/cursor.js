@@ -129,9 +129,10 @@ class BigCircle {
      * 
      * LOGIC: Updates both circle and dot positions using transform3d
      * for GPU acceleration. Checks if hovering over interactive element
-     * to trigger hover effect.
+     * or its children to trigger hover effect.
      * 
      * WHY transform3d: Better performance than top/left positioning
+     * WHY closest check: Detects hover on children of clickable elements
      */
     move(event) {
         // Update position tracking
@@ -144,13 +145,18 @@ class BigCircle {
         // Move dot (centered with calc for precision)
         this.dot.style.transform = `translate3d(calc(-50% + ${this.pointerX}px), calc(-50% + ${this.pointerY}px), 0)`;
         
-        // Check if hovering over interactive element
+        // Check if hovering over interactive element or its children
         // WHY: Provides visual feedback for clickable elements
+        // UPDATED: Now checks parent elements too using closest()
         if (
             event.target.localName === 'button' || 
             event.target.localName === 'a' || 
             event.target.onclick !== null ||
-            event.target.className.includes('curzr-hover')
+            event.target.className.includes('curzr-hover') ||
+            event.target.closest('a') !== null || // Check if inside <a> tag
+            event.target.closest('button') !== null || // Check if inside <button> tag
+            event.target.closest('.project-card') !== null || // Check if inside project card
+            event.target.classList.contains('project-card') // Check if IS project card
         ) {
             this.hover();
         }
@@ -160,11 +166,13 @@ class BigCircle {
     /**
      * Apply hover effect (scale up circle)
      * 
-     * LOGIC: Scales circle to 1.5x size when hovering
-     * over interactive elements for visual feedback
+     * LOGIC: Scales circle to 4.5x size when hovering
+     * over interactive elements for strong visual feedback
+     * 
+     * UPDATED: Changed from 1.5x to 4.5x (3x stronger)
      */
     hover() {
-        this.circle.style.transform += ` scale(1.5)`;
+        this.circle.style.transform += ` scale(2)`;
     }
     
     // <!-- ANCHOR: click -->

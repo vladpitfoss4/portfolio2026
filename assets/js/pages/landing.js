@@ -1,15 +1,16 @@
 // ==============================================
 // LANDING.JS - Landing page logic
 // Purpose: Initialize and manage landing page functionality
-// Dependencies: shared/api.js, components/card.js
+// Dependencies: shared/api.js, components/card.js, components/modal.js
 // Version: 1.0.0
 // ==============================================
 
 // ## ANCHOR POINTS
 // EXPORTS: initLanding
-// DEPS: shared/api.js, components/card.js
+// DEPS: shared/api.js, components/modal.js
 
 import { loadLinks, loadProjects } from '../shared/api.js';
+import { initModal, openProjectModal } from '../components/modal.js';
 
 // <!-- ANCHOR: initLanding -->
 /**
@@ -22,6 +23,9 @@ import { loadLinks, loadProjects } from '../shared/api.js';
  */
 export async function initLanding() {
     console.log('Landing page initialized');
+    
+    // Initialize modal component - REUSED: modal.js
+    initModal();
     
     // Initialize hero video autoplay - CRITICAL: ensure video plays
     initHeroVideo();
@@ -441,14 +445,15 @@ async function renderProjectsGrid() {
  * 
  * LOGIC: Generates a card DOM element from project data.
  * Includes thumbnail, title with bullet, and year.
+ * Opens modal on click instead of navigation.
  * 
  * REUSABLE LOGIC: Card component for projects grid
  */
 function createProjectCard(project) {
-    // Create card container
-    const card = document.createElement('a');
+    // Create card container - div instead of <a> for modal
+    const card = document.createElement('div');
     card.className = 'project-card';
-    card.href = `project.html?id=${project.id}`;
+    card.dataset.projectId = project.id; // Store project ID
     
     // Create image container
     const imageContainer = document.createElement('div');
@@ -469,6 +474,11 @@ function createProjectCard(project) {
     // Assemble card
     card.appendChild(imageContainer);
     card.appendChild(title);
+    
+    // Add click handler to open modal - REUSED: modal.js
+    card.addEventListener('click', () => {
+        openProjectModal(project.id);
+    });
     
     return card;
 }

@@ -2,7 +2,7 @@
 
 ## Overview
 Vanilla JS/CSS portfolio website with landing page and project detail pages.
-Minimal CMS using JSON file storage.
+Decentralized CMS using Markdown files with YAML frontmatter in project folders.
 
 ## Project Structure
 
@@ -20,17 +20,32 @@ Minimal CMS using JSON file storage.
 │   ├── js/
 │   │   ├── shared/
 │   │   │   ├── api.js      # Data fetching (REUSABLE)
+│   │   │   ├── markdown.js # MD parser (REUSABLE)
 │   │   │   ├── router.js   # Simple routing (REUSABLE)
 │   │   │   └── utils.js    # Helper functions (REUSABLE)
 │   │   ├── components/
-│   │   │   └── card.js     # Project card (REUSABLE)
+│   │   │   ├── card.js     # Project card (REUSABLE)
+│   │   │   ├── cursor.js   # Custom cursor (REUSABLE)
+│   │   │   ├── marquee.js  # Marquee animation (REUSABLE)
+│   │   │   └── modal.js    # Project gallery modal (REUSABLE)
 │   │   ├── pages/
 │   │   │   ├── landing.js  # Landing page logic
 │   │   │   └── project.js  # Project page logic
 │   │   └── main.js         # Entry point
 │   └── images/             # Optimized images (to be added)
 ├── data/
-│   └── projects.json       # CMS data storage
+│   └── links.json          # Social links data
+├── assets/
+│   └── projects/
+│       ├── adbison/
+│       │   ├── project.md  # Project metadata (frontmatter)
+│       │   ├── 1.webp      # Project images
+│       │   ├── 2.webp
+│       │   └── 3.webp
+│       ├── instaforex/
+│       │   └── project.md
+│       └── safetyfirst/
+│           └── project.md
 └── docs/
     └── development_plan.md # This file
 ```
@@ -52,9 +67,11 @@ Minimal CMS using JSON file storage.
 - [x] Dynamic header links rendering
 - [x] Dynamic resume button URL
 - [x] Hero section video background implementation
+- [x] Project modal gallery with vertical image layout
+- [x] Decentralized markdown-based CMS for projects
 
 ### 🚧 In Progress
-- [ ] Landing page - Additional sections (NEXT)
+- [ ] Additional landing page sections (NEXT)
 
 ### 📋 Backlog
 - [ ] Landing page - About section
@@ -133,3 +150,77 @@ Ready to build Hero section (first screen of landing page).
 - Debounce for search/filter
 - Lazy loading (to be implemented)
 - CDN-ready structure
+
+
+### Project Modal Gallery Implementation
+**Added:** 2026-02-18
+**Files:**
+- `assets/js/components/modal.js` - Modal component with vertical gallery
+- `assets/css/components.css` - Modal overlay styles
+- `assets/css/pages.css` - Project card click behavior
+- `index.html` - Modal markup
+- `assets/js/pages/landing.js` - Modal integration
+
+**Features:**
+- Full-screen dark overlay (95% black background)
+- Vertical image gallery with 40px gaps
+- Close button (top-right, animated X icon)
+- ESC key to close
+- Click outside gallery to close
+- Body scroll prevention when open
+- Lazy loading for images (first eager, rest lazy)
+- Smooth open/close transitions
+- Mobile-responsive (20px padding on mobile)
+
+**Behavior:**
+- Project cards open modal on click (no navigation)
+- Images loaded from `assets/projects/{projectId}/` folder
+- Images displayed in full width, vertically stacked
+- Scroll to view all images
+
+**Rationale:** Replaces navigation to separate project page with inline modal gallery. Faster UX, no page reload, keeps user on landing page. Images displayed at full resolution for portfolio showcase.
+
+**Technical Details:**
+- z-index: 1000 (above all content)
+- Images: .webp format for performance
+- SCALED FOR: 100k users - lazy loading, GPU-accelerated transforms
+- REUSABLE LOGIC: Modal component can be used for other overlays
+
+
+### Decentralized Markdown CMS Implementation
+**Added:** 2026-02-18
+**Files:**
+- `assets/js/shared/markdown.js` - Frontmatter parser
+- `assets/js/shared/api.js` - Updated to load from MD files
+- `assets/projects/*/project.md` - Project metadata files
+
+**Features:**
+- YAML frontmatter parsing (custom regex-based, zero dependencies)
+- Each project folder contains its own project.md file
+- Frontmatter fields: id, title, year, link, tags, featured
+- Markdown body for project description
+- Parallel loading of all projects (Promise.all)
+- Caching for performance
+
+**Structure:**
+```
+assets/projects/
+├── adbison/
+│   ├── project.md    # Metadata + description
+│   ├── 1.webp        # Images
+│   ├── 2.webp
+│   └── 3.webp
+├── instaforex/
+│   └── project.md
+└── safetyfirst/
+    └── project.md
+```
+
+**Rationale:** Decentralized CMS eliminates need for central projects.json file. Each project is self-contained in its folder. Easier to maintain, add, or remove projects. Markdown provides human-readable format for content editing.
+
+**Technical Details:**
+- Custom frontmatter parser: <1KB, O(n) complexity
+- Supports: strings, numbers, booleans, comma-separated arrays
+- Project folders list: hardcoded in markdown.js (can be moved to build script)
+- SCALED FOR: 100k users - parallel loading, caching, lazy image loading
+- REUSABLE LOGIC: Markdown parser can be used for blog posts, case studies, etc.

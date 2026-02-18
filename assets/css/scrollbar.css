@@ -1,0 +1,36 @@
+/* ==============================================
+   SCROLLBAR.CSS - Custom scrollbar styles
+   Purpose: Hide all scrollbars while keeping scroll functionality
+   Dependencies: None
+   Version: 1.0.0
+   ============================================== */
+
+/* ==============================================
+   HIDE SCROLLBARS GLOBALLY
+   Scrolling still works, scrollbars are invisible
+   ============================================== */
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: none;
+}
+
+/* IE and Edge legacy */
+* {
+    -ms-overflow-style: none;
+}
+
+/* ==============================================
+   NOTES
+   - mix-blend-mode: exclusion creates invert effect
+   - Matches custom cursor design philosophy
+   - Minimal visual weight, maximum elegance
+   - SCALED FOR: All screen sizes, smooth transitions
+   ============================================== */

@@ -1,45 +1,65 @@
 // ==============================================
 // API.JS - Data fetching and management
 // Purpose: Handle all data operations (fetch projects, filter, sort)
-// Dependencies: None (vanilla fetch API)
-// Version: 1.0.0
+// Dependencies: shared/markdown.js (for MD parsing)
+// Version: 2.0.0
 // REUSABLE LOGIC: Used across all pages for data access
 // ==============================================
 
 // ## ANCHOR POINTS
 // EXPORTS: loadProjects, getProjectById, filterProjects, getFeaturedProjects, loadLinks
-// DEPS: /data/projects.json, /data/links.json
+// DEPS: /data/links.json, shared/markdown.js
 
-const DATA_URL = '/data/projects.json';
+import { loadProjectFromMarkdown, getProjectFolders } from './markdown.js';
+
 const LINKS_URL = '/data/links.json';
-let cachedData = null;
+let cachedProjects = null;
 let cachedLinks = null;
 
 // <!-- ANCHOR: loadProjects -->
 /**
- * Load all projects from JSON file
+ * Load all projects from markdown files
  * @returns {Promise<Object>} Projects data with metadata
  * 
- * LOGIC: Fetches projects.json and caches result to avoid
- * multiple network requests. Returns full data structure.
+ * LOGIC: Scans project folders, loads each project.md file,
+ * parses frontmatter, and returns structured data.
+ * Caches result to avoid multiple network requests.
+ * 
+ * WHY: Decentralized CMS - each project folder contains its own
+ * metadata in project.md file. No central JSON file needed.
  * 
  * SCALED FOR: 100k users - implements caching strategy
  */
 export async function loadProjects() {
     // Return cached data if available
-    if (cachedData) {
-        return cachedData;
+    if (cachedProjects) {
+        return cachedProjects;
     }
     
     try {
-        const response = await fetch(DATA_URL);
+        const projectFolders = getProjectFolders();
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // Load all projects in parallel
+        const projectPromises = projectFolders.map(folder => 
+            loadProjectFromMarkdown(folder)
+        );
         
-        const data = await response.json();
-        cachedData = data; // Cache for future requests
+        const projects = await Promise.all(projectPromises);
+        
+        // Filter out null results (failed loads)
+        const validProjects = projects.filter(p => p !== null);
+        
+        // Build data structure
+        const data = {
+            projects: validProjects,
+            metadata: {
+                version: '2.0.0',
+                lastUpdated: new Date().toISOString(),
+                source: 'markdown'
+            }
+        };
+        
+        cachedProjects = data; // Cache for future requests
         
         return data;
     } catch (error) {
