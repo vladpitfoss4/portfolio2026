@@ -166,7 +166,7 @@ a:hover {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.95); /* 95% black overlay */
+    background-color: rgba(0, 0, 0, 0.9); /* 40% black overlay - more transparent */
     z-index: 1000;
     display: none; /* Hidden by default */
     overflow-y: auto; /* Vertical scroll for images */

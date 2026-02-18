@@ -50,15 +50,15 @@ export function initModal() {
 /**
  * Open modal with project images
  * @param {string} projectId - Project ID to load images from
- * @returns {void}
+ * @returns {Promise<void>}
  * 
- * LOGIC: Loads images from project folder, renders them vertically,
- * shows modal overlay, and prevents body scroll.
+ * LOGIC: Auto-detects and loads images from project folder,
+ * renders them vertically, shows modal overlay, and prevents body scroll.
  * 
- * WHY: Images are loaded from assets/projects/{projectId}/ folder.
- * All .webp files in folder are displayed in order.
+ * WHY: Images are auto-detected from assets/projects/{projectId}/ folder.
+ * All .webp files (1.webp, 2.webp, etc.) are displayed in order.
  */
-export function openProjectModal(projectId) {
+export async function openProjectModal(projectId) {
     const modal = document.getElementById('project-modal');
     const gallery = document.getElementById('modal-gallery');
     
@@ -70,12 +70,19 @@ export function openProjectModal(projectId) {
     // Clear existing images
     gallery.innerHTML = '';
     
-    // Get images for this project - CRITICAL: load from folder
-    const images = getProjectImages(projectId);
+    // Show loading state
+    gallery.innerHTML = '<div style="color: white; text-align: center; padding: 40px;">Loading...</div>';
+    
+    // Get images for this project - CRITICAL: auto-detect from folder
+    const images = await getProjectImages(projectId);
+    
+    // Clear loading state
+    gallery.innerHTML = '';
     
     if (images.length === 0) {
         console.warn(`No images found for project: ${projectId}`);
-        return;
+        gallery.innerHTML = '<div style="color: white; text-align: center; padding: 40px;">No images available</div>';
+        // Still show modal to display message
     }
     
     // Render images vertically
@@ -95,7 +102,18 @@ export function openProjectModal(projectId) {
     // Show modal
     modal.classList.add('project-modal--visible');
     
-    // Prevent body scroll
+    // Scroll modal to top - CRITICAL: start from beginning of gallery
+    modal.scrollTop = 0;
+    
+    // Prevent body scroll - CRITICAL: save position BEFORE applying fixed
+    const scrollY = window.scrollY;
+    modal.dataset.scrollY = scrollY.toString();
+    
+    // Apply fixed position with negative top to maintain visual position
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
     document.body.style.overflow = 'hidden';
     
     console.log(`Opened modal for project: ${projectId} with ${images.length} images`);
@@ -106,7 +124,8 @@ export function openProjectModal(projectId) {
  * Close modal and restore body scroll
  * @returns {void}
  * 
- * LOGIC: Hides modal overlay and restores body scroll.
+ * LOGIC: Hides modal overlay and restores body scroll position exactly.
+ * WHY: position:fixed removes scroll, so we restore it manually.
  */
 export function closeProjectModal() {
     const modal = document.getElementById('project-modal');
@@ -115,11 +134,21 @@ export function closeProjectModal() {
         return;
     }
     
+    // Get saved scroll position
+    const scrollY = parseInt(modal.dataset.scrollY || '0');
+    
     // Hide modal
     modal.classList.remove('project-modal--visible');
     
-    // Restore body scroll
+    // Restore body styles - CRITICAL: remove fixed position
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
     document.body.style.overflow = '';
+    
+    // Restore scroll position - CRITICAL: do this AFTER removing fixed
+    window.scrollTo(0, scrollY);
     
     console.log('Closed project modal');
 }
@@ -128,47 +157,71 @@ export function closeProjectModal() {
 /**
  * Get array of image paths for a project
  * @param {string} projectId - Project ID
- * @returns {string[]} Array of image paths
+ * @returns {Promise<string[]>} Array of image paths
  * 
- * LOGIC: Returns hardcoded image paths for each project.
- * Images are stored in assets/projects/{projectFolder}/ folder.
+ * LOGIC: Auto-detects images by trying to load them sequentially.
+ * Stops when image fails to load (404). Convention: 1.webp, 2.webp, etc.
  * 
- * WHY: Static file system - we can't dynamically scan folders in browser.
- * Images must be explicitly listed or loaded from JSON.
+ * WHY: Browser can't scan filesystem. We try loading images until 404.
+ * This allows adding images without updating code.
  * 
- * SCALED FOR: 100k users - images are lazy loaded
+ * SCALED FOR: 100k users - images are lazy loaded, cached by browser
  */
-function getProjectImages(projectId) {
-    // Map of project IDs to their folder names and image counts
-    // Convention: images named 1.webp, 2.webp, 3.webp, etc.
-    const projectImagesMap = {
-        'adbison-website': {
-            folder: 'adbison',
-            count: 3
-        },
-        'instaforex-search': {
-            folder: 'instaforex',
-            count: 0 // Add images when available
-        },
-        'safety-first-webapp': {
-            folder: 'safetyfirst',
-            count: 0 // Add images when available
-        }
+async function getProjectImages(projectId) {
+    // Map of project IDs to their folder names
+    const projectFolderMap = {
+        'adbison-website': 'adbison',
+        'instaforex-search': 'instaforex',
+        'safety-first-webapp': 'safetyfirst'
     };
     
-    const projectConfig = projectImagesMap[projectId];
+    const folder = projectFolderMap[projectId];
     
-    if (!projectConfig || projectConfig.count === 0) {
+    if (!folder) {
+        console.warn(`Unknown project ID: ${projectId}`);
         return [];
     }
     
-    // Generate image paths: 1.webp, 2.webp, 3.webp, ...
     const images = [];
-    for (let i = 1; i <= projectConfig.count; i++) {
-        images.push(`assets/projects/${projectConfig.folder}/${i}.webp`);
+    let index = 1;
+    const maxImages = 50; // Safety limit to prevent infinite loop
+    
+    // Try loading images sequentially until 404
+    while (index <= maxImages) {
+        const imagePath = `assets/projects/${folder}/${index}.webp`;
+        
+        // Check if image exists
+        const exists = await checkImageExists(imagePath);
+        
+        if (!exists) {
+            break; // Stop when image doesn't exist
+        }
+        
+        images.push(imagePath);
+        index++;
     }
     
     return images;
+}
+
+// <!-- ANCHOR: checkImageExists -->
+/**
+ * Check if image file exists
+ * @param {string} url - Image URL to check
+ * @returns {Promise<boolean>} True if image exists
+ * 
+ * LOGIC: Uses fetch HEAD request to check if file exists
+ * without downloading the full image.
+ * 
+ * WHY: Efficient way to detect file existence in browser.
+ */
+async function checkImageExists(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok;
+    } catch (error) {
+        return false;
+    }
 }
 
 // UPDATED COMMENTS

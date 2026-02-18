@@ -128,16 +128,17 @@ class BigCircle {
      * @param {MouseEvent} event - Mouse event with position data
      * 
      * LOGIC: Updates both circle and dot positions using transform3d
-     * for GPU acceleration. Checks if hovering over interactive element
-     * or its children to trigger hover effect.
+     * for GPU acceleration. Uses clientY instead of pageY to work
+     * correctly when body has position:fixed (modal open).
      * 
      * WHY transform3d: Better performance than top/left positioning
+     * WHY clientY: Works correctly with fixed body position
      * WHY closest check: Detects hover on children of clickable elements
      */
     move(event) {
-        // Update position tracking
-        this.pointerX = event.pageX;
-        this.pointerY = event.pageY + this.root.getBoundingClientRect().y;
+        // Update position tracking - use clientY for fixed body compatibility
+        this.pointerX = event.clientX;
+        this.pointerY = event.clientY;
         
         // Move circle (centered on cursor)
         this.circle.style.transform = `translate3d(${this.pointerX}px, ${this.pointerY}px, 0)`;
