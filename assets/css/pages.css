@@ -139,12 +139,25 @@
     
     /* Mobile uses .text-nav-small class for smaller text */
     
+    /* MOBILE FIX: Hide logo in header on mobile */
     .hero__logo {
-        height: 28px;
+        display: none;
     }
     
     .hero__marquee-logo {
         height: 28vh; /* Slightly smaller on mobile */
+    }
+    
+    /* MOBILE FIX: Hide "SCROLL" text, keep time left and copyright right */
+    .hero__footer-text:first-child {
+        display: none;
+    }
+    
+    /* MOBILE FIX: Remove center positioning for time - align left naturally */
+    .hero__footer-text--center {
+        position: static;
+        left: auto;
+        transform: none;
     }
 }
 
@@ -253,9 +266,12 @@
         padding: 10px;
     }
     
+    /* MOBILE FIX: Title aligned to left on mobile */
     .about__title {
         font-size: 48px;
         line-height: 1.1;
+        text-align: left;
+        width: 100%;
     }
     
     .about__content {
@@ -271,14 +287,16 @@
         gap: 16px;
     }
     
+    /* MOBILE FIX: Keep label indent same as desktop (82px from typography.css) */
     .about__label {
         font-size: 16px;
-        text-indent: 0;
+        text-indent: 82px; /* Same as desktop .text-section-label */
     }
     
+    /* MOBILE FIX: Keep paragraph indent same as desktop (82px from typography.css) */
     .about__description {
         font-size: 24px;
-        text-indent: 0;
+        text-indent: 82px; /* Same as desktop .text-body-large */
     }
 }
 
@@ -446,12 +464,20 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    /* MOBILE FIX: Reduce padding by half (140px / 2 = 70px) */
     .logos {
-        padding: 80px 0;
+        padding: 70px 0;
+    }
+    
+    /* MOBILE FIX: Enable marquee carousel on mobile */
+    .logos__marquee {
+        overflow: hidden; /* Hide overflow for carousel effect */
     }
     
     .logos__track {
         gap: 40px;
+        justify-content: flex-start; /* Align left for carousel */
+        animation: logosMarquee 20s linear infinite; /* Always animate on mobile */
     }
     
     .logos__item {
@@ -520,13 +546,14 @@
     
     .footer-links__grid {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start; /* MOBILE FIX: Align to left instead of center */
         gap: 24px;
         grid-template-columns: 1fr; /* Single column on mobile */
     }
     
+    /* MOBILE FIX: Text aligned to left on mobile like desktop */
     .footer-links__column {
-        text-align: center;
+        text-align: left;
     }
 }
 

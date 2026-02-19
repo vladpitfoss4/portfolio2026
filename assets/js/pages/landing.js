@@ -494,6 +494,7 @@ function createProjectCard(project) {
  * LOGIC: Loads logos from assets/images/logos folder,
  * checks if they overflow viewport, and enables marquee animation.
  * Duplicates logos for seamless infinite scroll.
+ * MOBILE: Always enables carousel on mobile devices.
  */
 function renderLogosMarquee() {
     const logosTrack = document.getElementById('logos-track');
@@ -532,25 +533,31 @@ function renderLogosMarquee() {
         logosTrack.appendChild(logoItem);
     });
     
-    // Check if logos overflow and need marquee
+    // Check if mobile or if logos overflow and need marquee
     setTimeout(() => {
+        const isMobile = window.innerWidth <= 768;
         const trackWidth = logosTrack.scrollWidth;
         const containerWidth = logosTrack.parentElement.offsetWidth;
         
-        if (trackWidth > containerWidth) {
-            // Duplicate logos for seamless loop
-            logos.forEach(logo => {
-                const logoItem = document.createElement('div');
-                logoItem.className = 'logos__item';
-                
-                const img = document.createElement('img');
-                img.src = `assets/images/logos/${logo}`;
-                img.alt = logo.replace(' logo.svg', '').replace('_', ' ');
-                img.loading = 'lazy';
-                
-                logoItem.appendChild(img);
-                logosTrack.appendChild(logoItem);
-            });
+        // MOBILE FIX: Always enable carousel on mobile, or if overflow on desktop
+        if (isMobile || trackWidth > containerWidth) {
+            // Duplicate logos for seamless loop (3 times for smooth mobile scroll)
+            const duplicateCount = isMobile ? 3 : 1;
+            
+            for (let i = 0; i < duplicateCount; i++) {
+                logos.forEach(logo => {
+                    const logoItem = document.createElement('div');
+                    logoItem.className = 'logos__item';
+                    
+                    const img = document.createElement('img');
+                    img.src = `assets/images/logos/${logo}`;
+                    img.alt = logo.replace(' logo.svg', '').replace('_', ' ');
+                    img.loading = 'lazy';
+                    
+                    logoItem.appendChild(img);
+                    logosTrack.appendChild(logoItem);
+                });
+            }
             
             // Enable marquee animation
             logosTrack.classList.add('logos__track--animate');
