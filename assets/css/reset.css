@@ -38,17 +38,19 @@ html {
     overflow-x: hidden; /* Prevent horizontal scroll */
     overflow-y: auto; /* Allow vertical scroll */
     /* iOS Safari viewport fix - fill entire available height */
-    height: -webkit-fill-available;
+    height: 100%;
 }
 
 /* Set core body defaults */
 body {
-    min-height: 100vh;
-    /* iOS Safari viewport fix - fill entire available height */
-    min-height: -webkit-fill-available;
+    /* iOS Safari fullscreen fix - DO NOT use min-height: 100vh */
+    /* This causes extra space and gaps on iOS Safari */
+    height: 100%;
     text-rendering: optimizeSpeed;
     line-height: 1.5;
     overflow-x: hidden; /* Prevent horizontal scroll */
+    margin: 0;
+    padding: 0;
 }
 
 /* Make images easier to work with */

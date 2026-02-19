@@ -12,11 +12,11 @@
    ============================================== */
 
 .hero {
-    height: 100vh;
-    /* iOS Safari viewport fix - fill entire available height without address bar offset */
-    height: -webkit-fill-available;
-    /* Modern browsers - dynamic viewport height that accounts for browser UI */
-    height: 100dvh;
+    /* iOS Safari fullscreen fix - multiple fallbacks for compatibility */
+    height: 100vh; /* Fallback for older browsers */
+    height: -webkit-fill-available; /* iOS Safari - fills available space */
+    height: 100dvh; /* Modern browsers - dynamic viewport height */
+    
     width: 100vw;
     max-width: 100%; /* Prevent overflow */
     display: flex;
@@ -25,9 +25,15 @@
     overflow: hidden;
     position: relative;
     background-color: #000; /* Black background to see if video loads */
-    /* iOS Safari fix - no padding, video fills entire screen including notch area */
+    
+    /* iOS Safari fullscreen fix - critical for no gaps */
     padding: 0;
     margin: 0;
+    
+    /* iOS Safari fix - prevent address bar from creating gaps */
+    /* Source: https://gist.github.com/nicolaskopp/637aa4e20c66fe41a6ea2a0773935f6e */
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
 }
 
 /* Background video - fills entire hero block */
