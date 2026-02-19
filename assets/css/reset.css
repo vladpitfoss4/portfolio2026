@@ -37,11 +37,15 @@ html:focus-within {
 html {
     overflow-x: hidden; /* Prevent horizontal scroll */
     overflow-y: auto; /* Allow vertical scroll */
+    /* iOS Safari viewport fix - fill entire available height */
+    height: -webkit-fill-available;
 }
 
 /* Set core body defaults */
 body {
     min-height: 100vh;
+    /* iOS Safari viewport fix - fill entire available height */
+    min-height: -webkit-fill-available;
     text-rendering: optimizeSpeed;
     line-height: 1.5;
     overflow-x: hidden; /* Prevent horizontal scroll */

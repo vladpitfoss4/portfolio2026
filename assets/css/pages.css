@@ -13,6 +13,10 @@
 
 .hero {
     height: 100vh;
+    /* iOS Safari viewport fix - fill entire available height without address bar offset */
+    height: -webkit-fill-available;
+    /* Modern browsers - dynamic viewport height that accounts for browser UI */
+    height: 100dvh;
     width: 100vw;
     max-width: 100%; /* Prevent overflow */
     display: flex;
@@ -44,6 +48,10 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--space-lg) var(--space-xl);
+    /* iOS Safari safe-area fix - respect notch and rounded corners */
+    padding-top: max(var(--space-lg), env(safe-area-inset-top));
+    padding-left: max(var(--space-xl), env(safe-area-inset-left));
+    padding-right: max(var(--space-xl), env(safe-area-inset-right));
     position: relative;
     z-index: 10; /* Way above video */
     /* Exclusion blend mode for inverted color effect */
@@ -113,6 +121,10 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--space-lg) var(--space-xl);
+    /* iOS Safari safe-area fix - respect home indicator and rounded corners */
+    padding-bottom: max(var(--space-lg), env(safe-area-inset-bottom));
+    padding-left: max(var(--space-xl), env(safe-area-inset-left));
+    padding-right: max(var(--space-xl), env(safe-area-inset-right));
     position: relative;
     z-index: 10; /* Way above video */
     /* Exclusion blend mode for inverted color effect */
@@ -132,9 +144,20 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .hero__header,
+    .hero__header {
+        padding: var(--space-md) var(--space-lg);
+        /* iOS Safari safe-area fix - mobile specific */
+        padding-top: max(var(--space-md), env(safe-area-inset-top));
+        padding-left: max(var(--space-lg), env(safe-area-inset-left));
+        padding-right: max(var(--space-lg), env(safe-area-inset-right));
+    }
+    
     .hero__footer {
         padding: var(--space-md) var(--space-lg);
+        /* iOS Safari safe-area fix - mobile specific */
+        padding-bottom: max(var(--space-md), env(safe-area-inset-bottom));
+        padding-left: max(var(--space-lg), env(safe-area-inset-left));
+        padding-right: max(var(--space-lg), env(safe-area-inset-right));
     }
     
     /* Mobile uses .text-nav-small class for smaller text */
