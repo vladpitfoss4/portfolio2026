@@ -1,6 +1,26 @@
 {
   "projects": [
     {
+      "id": "japan-landing",
+      "title": "JAPAN / LANDING",
+      "year": "2025",
+      "thumbnail": "/assets/projects/japan/japanpreview.png",
+      "images": [
+        "/assets/projects/japan/japanscreen1.png",
+        "/assets/projects/japan/japanscreen2.png",
+        "/assets/projects/japan/japanscreen3.png"
+      ],
+      "tags": ["UI/UX", "Web Landing"],
+      "techStack": [],
+      "links": {
+        "live": "https://safetyfirst.app",
+        "github": ""
+      },
+      "date": "2025-01-01",
+      "featured": false,
+      "fullDescription": ""
+    },
+    {
       "id": "instaforex-search",
       "title": "INSTAFOREX / SEARCH ENGINE",
       "year": "2025",
