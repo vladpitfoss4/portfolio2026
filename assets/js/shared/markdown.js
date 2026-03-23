@@ -119,6 +119,11 @@ export async function loadProjectFromMarkdown(projectId) {
                 thumbnail = `/assets/projects/${projectId}/japanpreview.png`;
                 break;
             }
+            // For safetyfirst: use safety preview.jpg as thumbnail
+            if (projectId === 'safetyfirst' && ext === '.jpg') {
+                thumbnail = `/assets/projects/${projectId}/safety preview.jpg`;
+                break;
+            }
         }
         
         // Images: scan for screen files (screen1, screen2, etc.) or all images

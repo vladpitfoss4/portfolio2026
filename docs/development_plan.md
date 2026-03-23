@@ -193,6 +193,7 @@ Ready to build Hero section (first screen of landing page).
 **Files:**
 - `assets/js/shared/markdown.js` - Frontmatter parser
 - `assets/js/shared/api.js` - Updated to load from MD files
+- `assets/js/components/modal.js` - Updated image loading for all project types
 - `assets/projects/*/project.md` - Project metadata files
 
 **Features:**
@@ -221,20 +222,27 @@ assets/projects/
 │   ├── japanscreen2.png
 │   └── japanscreen3.png
 └── safetyfirst/
-    └── project.md
+    ├── project.md
+    ├── safety preview.jpg  # Thumbnail
+    ├── safetyfirsstcreen1.jpg
+    ├── safetyfirsstcreen2.jpg
+    └── ... (up to 8)
 ```
 
 **Rationale:** Decentralized CMS eliminates need for central projects.json file. Each project is self-contained in its folder. Easier to maintain, add, or remove projects. Markdown provides human-readable format for content editing.
 
 **Changes (2026-03-23):**
 - Added 'japan' to getProjectFolders() list
-- Implemented dynamic thumbnail path resolution for .png files
+- Implemented dynamic thumbnail path resolution for .png and .jpg files
 - Added japanscreen*.png image loading for modal gallery
+- Added safetyfirsstcreen*.jpg image loading for modal gallery
 - Fixed title format to "JAPAN / LANDING" convention
+- Updated modal.js to support all project image formats
 
 **Technical Details:**
 - Custom frontmatter parser: <1KB, O(n) complexity
 - Supports: strings, numbers, booleans, comma-separated arrays
 - Project folders list: hardcoded in markdown.js (can be moved to build script)
+- Modal image loading: supports .webp (adbison, instaforex), .png (japan), .jpg (safetyfirst)
 - SCALED FOR: 100k users - parallel loading, caching, lazy image loading
 - REUSABLE LOGIC: Markdown parser can be used for blog posts, case studies, etc.

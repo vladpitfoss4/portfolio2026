@@ -160,7 +160,9 @@ export function closeProjectModal() {
  * @returns {Promise<string[]>} Array of image paths
  * 
  * LOGIC: Auto-detects images by trying to load them sequentially.
- * Stops when image fails to load (404). Convention: 1.webp, 2.webp, etc.
+ * Stops when image fails to load (404). Supports .webp, .png, .jpg extensions.
+ * For japan: uses japanscreen1.png, japanscreen2.png, japanscreen3.png
+ * For safetyfirst: uses safetyfirsstcreen*.jpg files
  * 
  * WHY: Browser can't scan filesystem. We try loading images until 404.
  * This allows adding images without updating code.
@@ -172,6 +174,7 @@ async function getProjectImages(projectId) {
     const projectFolderMap = {
         'adbison-website': 'adbison',
         'instaforex-search': 'instaforex',
+        'japan-landing': 'japan',
         'safety-first-webapp': 'safetyfirst'
     };
     
@@ -183,6 +186,34 @@ async function getProjectImages(projectId) {
     }
     
     const images = [];
+    
+    // Special handling for japan project (uses .png files with custom naming)
+    if (folder === 'japan') {
+        // japan has: japanscreen1.png, japanscreen2.png, japanscreen3.png
+        for (let i = 1; i <= 3; i++) {
+            const imagePath = `assets/projects/${folder}/japanscreen${i}.png`;
+            const exists = await checkImageExists(imagePath);
+            if (exists) {
+                images.push(imagePath);
+            }
+        }
+        return images;
+    }
+    
+    // Special handling for safetyfirst project (uses .jpg files with custom naming)
+    if (folder === 'safetyfirst') {
+        // safetyfirst has: safetyfirsstcreen1.jpg through safetyfirsstcreen8.jpg
+        for (let i = 1; i <= 8; i++) {
+            const imagePath = `assets/projects/${folder}/safetyfirsstcreen${i}.jpg`;
+            const exists = await checkImageExists(imagePath);
+            if (exists) {
+                images.push(imagePath);
+            }
+        }
+        return images;
+    }
+    
+    // Default: try .webp files (adbison, instaforex pattern)
     let index = 1;
     const maxImages = 50; // Safety limit to prevent infinite loop
     
