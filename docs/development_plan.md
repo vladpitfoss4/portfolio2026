@@ -189,6 +189,7 @@ Ready to build Hero section (first screen of landing page).
 
 ### Decentralized Markdown CMS Implementation
 **Added:** 2026-02-18
+**Updated:** 2026-03-23
 **Files:**
 - `assets/js/shared/markdown.js` - Frontmatter parser
 - `assets/js/shared/api.js` - Updated to load from MD files
@@ -201,6 +202,7 @@ Ready to build Hero section (first screen of landing page).
 - Markdown body for project description
 - Parallel loading of all projects (Promise.all)
 - Caching for performance
+- Dynamic image handling for different file extensions (.webp, .png, .jpg)
 
 **Structure:**
 ```
@@ -212,11 +214,23 @@ assets/projects/
 │   └── 3.webp
 ├── instaforex/
 │   └── project.md
+├── japan/            # NEW: Japan landing page project
+│   ├── project.md
+│   ├── japanpreview.png    # Thumbnail
+│   ├── japanscreen1.png
+│   ├── japanscreen2.png
+│   └── japanscreen3.png
 └── safetyfirst/
     └── project.md
 ```
 
 **Rationale:** Decentralized CMS eliminates need for central projects.json file. Each project is self-contained in its folder. Easier to maintain, add, or remove projects. Markdown provides human-readable format for content editing.
+
+**Changes (2026-03-23):**
+- Added 'japan' to getProjectFolders() list
+- Implemented dynamic thumbnail path resolution for .png files
+- Added japanscreen*.png image loading for modal gallery
+- Fixed title format to "JAPAN / LANDING" convention
 
 **Technical Details:**
 - Custom frontmatter parser: <1KB, O(n) complexity

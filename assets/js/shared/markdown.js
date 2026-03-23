@@ -107,6 +107,33 @@ export async function loadProjectFromMarkdown(projectId) {
         const { metadata, body } = parseFrontmatter(content);
         
         // Build project object with required fields
+        // Thumbnail: try common extensions (.webp, .png, .jpg)
+        let thumbnail = `/assets/projects/${projectId}/1.webp`;
+        const thumbnailExtensions = ['.webp', '.png', '.jpg', '.jpeg'];
+        
+        for (const ext of thumbnailExtensions) {
+            const testPath = `/assets/projects/${projectId}/1${ext}`;
+            // We can't check if file exists, so we'll use convention
+            // For japan: use japanpreview.png as thumbnail
+            if (projectId === 'japan' && ext === '.png') {
+                thumbnail = `/assets/projects/${projectId}/japanpreview.png`;
+                break;
+            }
+        }
+        
+        // Images: scan for screen files (screen1, screen2, etc.) or all images
+        const images = [];
+        const screenPatterns = [
+            { pattern: /screen\d+\.(webp|png|jpg)/i, max: 10 }
+        ];
+        
+        // For japan: use japanscreen1.png, japanscreen2.png, japanscreen3.png
+        if (projectId === 'japan') {
+            for (let i = 1; i <= 3; i++) {
+                images.push(`/assets/projects/${projectId}/japanscreen${i}.png`);
+            }
+        }
+        
         return {
             id: metadata.id || projectId,
             title: metadata.title || 'Untitled Project',
@@ -115,10 +142,8 @@ export async function loadProjectFromMarkdown(projectId) {
             tags: Array.isArray(metadata.tags) ? metadata.tags : [],
             featured: metadata.featured || false,
             description: body,
-            // Thumbnail path convention: first image in folder
-            thumbnail: `/assets/projects/${projectId}/1.webp`,
-            // Images will be loaded dynamically by modal
-            images: []
+            thumbnail,
+            images
         };
     } catch (error) {
         console.error(`Failed to load project markdown: ${projectId}`, error);
@@ -143,6 +168,7 @@ export function getProjectFolders() {
     return [
         'adbison',
         'instaforex',
+        'japan',
         'safetyfirst'
     ];
 }
