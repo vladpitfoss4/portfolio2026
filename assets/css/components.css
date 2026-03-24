@@ -175,6 +175,30 @@ a:hover {
     cursor: pointer; /* Show pointer to indicate clickable */
 }
 
+/* Close button - top right */
+.project-modal__close {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-size: 28px;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    z-index: 1001;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.project-modal__close:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: scale(1.04);
+}
+
 /* Modal visible state */
 .project-modal--visible {
     display: block;
@@ -208,10 +232,26 @@ a:hover {
     object-fit: contain;
 }
 
+/* Loading / empty state */
+.project-modal__status {
+    color: #ffffff;
+    text-align: center;
+    padding: 40px;
+    font-size: var(--font-size-lg);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .project-modal {
         padding: 40px 0;
+    }
+
+    .project-modal__close {
+        top: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+        font-size: 26px;
     }
     
     .project-modal__gallery {

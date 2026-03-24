@@ -107,35 +107,27 @@ export async function loadProjectFromMarkdown(projectId) {
         const { metadata, body } = parseFrontmatter(content);
         
         // Build project object with required fields
-        // Thumbnail: try common extensions (.webp, .png, .jpg)
+        // Thumbnail: use project-specific preview files where needed
         let thumbnail = `/assets/projects/${projectId}/1.webp`;
-        const thumbnailExtensions = ['.webp', '.png', '.jpg', '.jpeg'];
-        
-        for (const ext of thumbnailExtensions) {
-            const testPath = `/assets/projects/${projectId}/1${ext}`;
-            // We can't check if file exists, so we'll use convention
-            // For japan: use japanpreview.png as thumbnail
-            if (projectId === 'japan' && ext === '.png') {
-                thumbnail = `/assets/projects/${projectId}/japanpreview.png`;
-                break;
-            }
-            // For safetyfirst: use safety preview.jpg as thumbnail
-            if (projectId === 'safetyfirst' && ext === '.jpg') {
-                thumbnail = `/assets/projects/${projectId}/safety preview.jpg`;
-                break;
-            }
+        if (projectId === 'japan') {
+            thumbnail = `/assets/projects/${projectId}/japanpreview.png`;
+        } else if (projectId === 'safetyfirst') {
+            thumbnail = `/assets/projects/${projectId}/safetypreview.jpg`;
+        } else if (projectId === 'gym') {
+            thumbnail = `/assets/projects/${projectId}/landingneonscreenpreview.png`;
         }
         
         // Images: scan for screen files (screen1, screen2, etc.) or all images
         const images = [];
-        const screenPatterns = [
-            { pattern: /screen\d+\.(webp|png|jpg)/i, max: 10 }
-        ];
         
         // For japan: use japanscreen1.png, japanscreen2.png, japanscreen3.png
         if (projectId === 'japan') {
             for (let i = 1; i <= 3; i++) {
                 images.push(`/assets/projects/${projectId}/japanscreen${i}.png`);
+            }
+        } else if (projectId === 'gym') {
+            for (let i = 1; i <= 8; i++) {
+                images.push(`/assets/projects/${projectId}/landingneonscreen${i}.png`);
             }
         }
         
@@ -172,9 +164,10 @@ export async function loadProjectFromMarkdown(projectId) {
 export function getProjectFolders() {
     return [
         'adbison',
+        'gym',
         'instaforex',
-        'japan',
-        'safetyfirst'
+        'safetyfirst',
+        'japan'
     ];
 }
 

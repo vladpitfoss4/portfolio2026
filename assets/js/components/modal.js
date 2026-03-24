@@ -9,6 +9,8 @@
 // EXPORTS: openProjectModal, closeProjectModal, initModal
 // DEPS: None
 
+let activeLoadToken = 0;
+
 // <!-- ANCHOR: initModal -->
 /**
  * Initialize modal component with event listeners
@@ -27,6 +29,8 @@ export function initModal() {
         console.warn('Modal element not found');
         return;
     }
+
+    const closeButton = modal.querySelector('[data-modal-close]');
     
     // ESC key to close
     document.addEventListener('keydown', (e) => {
@@ -34,6 +38,11 @@ export function initModal() {
             closeProjectModal();
         }
     });
+
+    // Close button in the top-right corner
+    if (closeButton) {
+        closeButton.addEventListener('click', closeProjectModal);
+    }
     
     // Click on modal (backdrop) to close
     // WHY: Check if click is directly on modal, not on children (images)
@@ -66,22 +75,44 @@ export async function openProjectModal(projectId) {
         console.error('Modal elements not found');
         return;
     }
+
+    const loadToken = ++activeLoadToken;
     
     // Clear existing images
     gallery.innerHTML = '';
     
-    // Show loading state
-    gallery.innerHTML = '<div style="color: white; text-align: center; padding: 40px;">Loading...</div>';
+    // Show modal immediately with loading state
+    modal.classList.add('project-modal--visible');
+
+    // Scroll modal to top - CRITICAL: start from beginning of gallery
+    modal.scrollTop = 0;
+
+    // Prevent body scroll immediately so the overlay feels instant
+    const scrollY = window.scrollY;
+    modal.dataset.scrollY = scrollY.toString();
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.overflow = 'hidden';
+
+    // Show loading state inside the opened modal
+    gallery.innerHTML = '<div class="project-modal__status">Loading...</div>';
     
     // Get images for this project - CRITICAL: auto-detect from folder
     const images = await getProjectImages(projectId);
+
+    // Ignore stale async results if another project was opened after this one
+    if (loadToken !== activeLoadToken) {
+        return;
+    }
     
     // Clear loading state
     gallery.innerHTML = '';
     
     if (images.length === 0) {
         console.warn(`No images found for project: ${projectId}`);
-        gallery.innerHTML = '<div style="color: white; text-align: center; padding: 40px;">No images available</div>';
+        gallery.innerHTML = '<div class="project-modal__status">No images available</div>';
         // Still show modal to display message
     }
     
@@ -98,23 +129,6 @@ export async function openProjectModal(projectId) {
         imageWrapper.appendChild(img);
         gallery.appendChild(imageWrapper);
     });
-    
-    // Show modal
-    modal.classList.add('project-modal--visible');
-    
-    // Scroll modal to top - CRITICAL: start from beginning of gallery
-    modal.scrollTop = 0;
-    
-    // Prevent body scroll - CRITICAL: save position BEFORE applying fixed
-    const scrollY = window.scrollY;
-    modal.dataset.scrollY = scrollY.toString();
-    
-    // Apply fixed position with negative top to maintain visual position
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.overflow = 'hidden';
     
     console.log(`Opened modal for project: ${projectId} with ${images.length} images`);
 }
@@ -133,6 +147,8 @@ export function closeProjectModal() {
     if (!modal) {
         return;
     }
+
+    activeLoadToken++;
     
     // Get saved scroll position
     const scrollY = parseInt(modal.dataset.scrollY || '0');
@@ -173,6 +189,7 @@ async function getProjectImages(projectId) {
     // Map of project IDs to their folder names
     const projectFolderMap = {
         'adbison-website': 'adbison',
+        'gym-landing': 'gym',
         'instaforex-search': 'instaforex',
         'japan-landing': 'japan',
         'safety-first-webapp': 'safetyfirst'
@@ -205,6 +222,18 @@ async function getProjectImages(projectId) {
         // safetyfirst has: safetyfirsstcreen1.jpg through safetyfirsstcreen8.jpg
         for (let i = 1; i <= 8; i++) {
             const imagePath = `assets/projects/${folder}/safetyfirsstcreen${i}.jpg`;
+            const exists = await checkImageExists(imagePath);
+            if (exists) {
+                images.push(imagePath);
+            }
+        }
+        return images;
+    }
+
+    // Special handling for gym project (uses .png files with custom naming)
+    if (folder === 'gym') {
+        for (let i = 1; i <= 8; i++) {
+            const imagePath = `assets/projects/${folder}/landingneonscreen${i}.png`;
             const exists = await checkImageExists(imagePath);
             if (exists) {
                 images.push(imagePath);
