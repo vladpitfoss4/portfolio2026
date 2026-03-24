@@ -180,22 +180,25 @@ a:hover {
     position: fixed;
     top: 24px;
     right: 24px;
-    width: 44px;
-    height: 44px;
+    width: auto;
+    height: auto;
+    padding: 0;
     border: none;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
+    border-radius: 0;
+    background: transparent;
     color: #ffffff;
-    font-size: 28px;
+    font-size: 40px;
     line-height: 1;
-    display: grid;
-    place-items: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     z-index: 1001;
-    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
 }
 
 .project-modal__close:hover {
-    background: rgba(255, 255, 255, 0.16);
+    background: transparent;
+    opacity: 0.75;
     transform: scale(1.04);
 }
 
@@ -249,9 +252,7 @@ a:hover {
     .project-modal__close {
         top: 16px;
         right: 16px;
-        width: 40px;
-        height: 40px;
-        font-size: 26px;
+        font-size: 34px;
     }
     
     .project-modal__gallery {
